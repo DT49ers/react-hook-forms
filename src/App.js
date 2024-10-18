@@ -5,28 +5,27 @@ import "./App.css";
 import axios from "axios";
 
 function App() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  const sumbitFormToGoogle = (data) => {
-    console.log(data);
-    // Validate form data before submission
-    const { name, age, salary, hobby } = data;
+  const sumbitFormToGoogle = ({ name, age, salary, hobby }) => {
+    // Perform form validation and submission logic here
     // Convert form data to JSON format for API submission
-    const tableData = {
-      name,
-      age,
-      salary,
-      hobby,
-    };
     axios
       .post(
         "https://api.sheetbest.com/sheets/f5f021da-f3aa-4b7c-a607-00825be9496e",
-        tableData
+        { name, age, salary, hobby }
       )
       .then((response) => {
+        alert("Row submitted successfully!");
         console.log(response);
-      });
-    // Perform form validation and submission logic here
+      })
+      .catch((error) => alert(error.message));
+    reset();
   };
   return (
     <div className="app">
@@ -34,27 +33,35 @@ function App() {
       <form>
         <TextField
           name="name"
+          error={errors.name}
           {...register("name", { required: true })}
           label="Name"
           variant="standard"
+          helperText={errors.name && "Name is required"}
         />
         <TextField
           name="age"
+          error={errors.age}
           {...register("age", { required: true })}
           label="Age"
           variant="standard"
+          helperText={errors.age && "Age is required"}
         />
         <TextField
           name="salary"
+          error={errors.salary}
           {...register("salary", { required: true })}
           label="Salary"
           variant="standard"
+          helperText={errors.salary && "Salary is required"}
         />
         <TextField
           name="hobby"
+          error={errors.hobby}
           {...register("hobby", { required: true })}
           label="Hobby"
           variant="standard"
+          helperText={errors.hobby && "Hobby is required"}
         />
         <Button
           onClick={handleSubmit(sumbitFormToGoogle)}
