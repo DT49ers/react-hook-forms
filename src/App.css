@@ -1,4 +1,5 @@
 .app > form {
+  margin-left: 20px;
   background-color: whitesmoke;
   display: flex;
   flex-direction: column ;
